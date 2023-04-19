@@ -4,10 +4,10 @@ This is a simple Discord bot that allows members of a Wolvesville clan to chat w
 # Installation
 To use this bot, you'll need to have Node.js and npm installed on your system. Once you've got those set up, you can follow these steps to get the bot up and running:
 
-Clone this repository to your local machine.
-Install the required dependencies by running npm install in the project directory.
-Set up your environment variables by creating a .env file in the project directory with the following contents:
-makefile
+* Clone this repository to your local machine.
+* Install the required dependencies by running npm install in the project directory.
+* Set up your environment variables by creating a .env file in the project directory with the following contents:
+
 ```
 token=YOUR_DISCORD_BOT_TOKEN
 WWOKEY=YOUR_WOLVESVILLE_API_KEY
@@ -15,7 +15,13 @@ wwoClanId=YOUR_WOLVESVILLE_CLAN_ID
 channelId=YOUR_DISCORD_CHANNEL_ID
 ```
 
-Replace the values with your own Discord bot token, Wolvesville API key, clan ID, and Discord channel ID, respectively.
+Replace the values with your own:
+
+* Discord bot token - from discord.com/developers
+* Wolvesville API key - available in game menu
+* clan ID - can be obtained by using GET /clans/search?name={name}
+* Discord channel ID - that the bot will listen to
+
 Start the bot by running node index.js in the project directory.
 
 # Usage
