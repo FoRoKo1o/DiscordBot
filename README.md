@@ -26,7 +26,10 @@ Start the bot by running node index.js in the project directory.
 
 # Usage
 Once the bot is running, it will automatically fetch new messages from the Wolvesville chat every 10 seconds and send them to the designated Discord channel. Likewise, any messages posted in the Discord channel will be forwarded to the Wolvesville chat.
-Whenever a new player joins, the clan bot will post a welcome message in game chat and also post a short message in Discord.
+
+# Features
+* Whenever a new player joins, the clan bot will post a welcome message in game chat and also post a short message in Discord.
+* Added Discord slash command "/aktywnosc". Command displays detailed information about clan members (offline days, xp change since last check).
 
 # Future Updates
 The following updates are planned for future versions of the bot:
