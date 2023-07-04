@@ -37,6 +37,5 @@ The following updates are planned for future versions of the bot:
 * Making the code more readable.
 * Adding an automod function that kicks inactive players.
 * Allowing members to buy clan quests via Discord pools.
-* Optimizing RAM usage by saving messages to a file.
 # Credits
-This bot was made by FoRoKo#5660. Thanks to the Discord.js and Wolvesville.js libraries for making this project possible!
+This bot was made by FoRoKo using Discord.js and Wolvesville.js libraries.
