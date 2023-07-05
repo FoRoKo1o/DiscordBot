@@ -34,7 +34,6 @@ Once the bot is running, it will automatically fetch new messages from the Wolve
 # Future Updates
 The following updates are planned for future versions of the bot:
 
-* Making the code more readable.
 * Adding an automod function that kicks inactive players.
 * Allowing members to buy clan quests via Discord pools.
 # Credits
