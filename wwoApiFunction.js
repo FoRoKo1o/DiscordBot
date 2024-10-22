@@ -1,6 +1,6 @@
-const fetch = require('node-fetch');
-const fs = require('fs');
-const Discord = require("discord.js");
+import fetch from 'node-fetch';
+import fs from 'fs';
+import Discord from "discord.js";
 
 let client;
 function init(discordClient) {
@@ -37,7 +37,7 @@ setInterval(() => {
 }, 10000); // get messages once per 10s
 
 // Process received messages
-function processMessages(data) {
+export function processMessages(data) {
 	const newMessages = data.filter(message => new Date(message.date) > lastMessageDate);
 	newMessages.forEach(message => {
 		if (message.playerId != null && !message.isSystem) {
@@ -53,14 +53,15 @@ function processMessages(data) {
 }
 
 //welcomer
-function welcome(message) {
+export function welcome(message) {
 	const username = message.msg.split('join&username=')[1];
 	const channel = client.channels.cache.get(channelId);
 	channel.send(`Witamy **${username}**!`);
-	var welcome = `Witamy ${username} w klanie Quack* Poland! Razem stworzymy niezapomniane chwile. 
+	/*var welcome = `Witamy ${username} w klanie Quack* Poland! Razem stworzymy niezapomniane chwile. 
 W razie pytań pisz do:
 Foroko, Grafin, Agama, Beathrice Preferowany kontakt: Discord https://discord.gg/XDygxsS.
-Udanych łowów!`;
+Udanych łowów!`;*/
+  var welcome = `Witamy ${username}! Zapraszamy na serwer discord https://discord.gg/XDygxsS.`;
 	fetch(`https://api.wolvesville.com/clans/${clanId}/chat`, {
 			method: 'POST',
 			headers: {
@@ -81,7 +82,7 @@ Udanych łowów!`;
 }
 
 // Send message to Discord chat
-function sendMessageonDiscordChat(message) {
+export function sendMessageonDiscordChat(message) {
 	const channel = client.channels.cache.get(channelId);
 	//if (message.playerId != null && !message.isSystem) {
 	getPlayerUsername(message.playerId).then((username) => {
@@ -91,7 +92,7 @@ function sendMessageonDiscordChat(message) {
 }
 
 // Fetch player's username from WWO API
-function getPlayerUsername(playerId) {
+export function getPlayerUsername(playerId) {
 	return fetch(`https://api.wolvesville.com/players/${playerId}`, {
 			method: 'GET',
 			headers: {
@@ -103,9 +104,9 @@ function getPlayerUsername(playerId) {
 		.then((response) => response.json())
 		.then((data) => data.username);
 }
-  module.exports = {
-    init,
-    welcome,
-    sendMessageonDiscordChat,
-    getPlayerUsername,
-  };
+//   module.exports = {
+//     init,
+//     welcome,
+//     sendMessageonDiscordChat,
+//     getPlayerUsername,
+//   };
