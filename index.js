@@ -59,38 +59,30 @@ client.on('messageCreate', async message => {
     }
 });
 
+
 // Send message to WWO chat
 function sendMessageonWwoChat(message) {
     const content = message.content;
     const username = message.member.nickname || message.author.username;
-    let messageFormatted = `[DISCORD ${username}] ${content}`;
+    let messageFormated = `[DISCORD ${username}] ${content}`;
     fetch(`https://api.wolvesville.com/clans/${clanId}/chat`, {
-        method: 'POST',
-        headers: {
-            'Authorization': wwokey,
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-            message: messageFormatted,
-        })
+      method: 'POST',
+      headers: {
+        'Authorization': wwokey,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        message: messageFormated,
+      })
     })
-    .then(response => {
-        // Sprawdź, czy odpowiedź jest w porządku
-        if (!response.ok) {
-            // Zapisz, co się stało
-            console.error(`Error: ${response.status} ${response.statusText}`);
-            return response.text(); // lub response.json() w zależności od sytuacji
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log(`Message ${content} sent!`, data);
-    })
-    .catch((error) => {
-        console.error('Message sending error:', error);
-    });
-}
+      .then(() => {
+        console.log(`message ${content} send!`);
+      })
+      .catch((error) => {
+        console.error('message sending error:', error);
+      });
+  }
 
 
 // Login the Discord bot with the provided token
