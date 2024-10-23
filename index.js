@@ -6,7 +6,6 @@ import { init as initProcessMessages, processMessages, welcome, sendMessageonDis
 import registerCommands from './register-commands.js';
 import { init, fetchMembers, fetchMembersWithXPChange, formatMembersListWithXPChange, getDaysSinceLastCheck, calculateXPChange } from './clan-activity.js';
 
-
 dotenv.config();
 
 // Discord client initialization
