@@ -50,15 +50,22 @@ client.on('interactionCreate', async (interaction) => {
 });
 
 // Handle new messages in the designated Discord channel
-client.on('messageCreate', async message => {
-    if (message.channel.id === channelId) {
-        if (message.content.startsWith('[Wilki') || message.content.includes('Witamy **')) return;
-        else {
-            sendMessageonWwoChat(message);
-        }
+client.on('messageCreate', message => {
+    // Funny reactions
+    if (message.content.toLowerCase().includes('foroko') || message.content.includes('<@343083547499954186>')) {
+      message.react('👀');
     }
-});
-
+    if ((message.content.toLowerCase().includes('wilk') || message.content.includes('<@1078716201993252865>')) &&  !message.content.includes('[Wilki')){
+      message.react('🐺');
+    }
+    // Handle new messages in the designated Discord channel
+    if (message.channel.id === channelId) {
+      if (message.content.startsWith('[Wilki') || message.content.includes('Witamy **')) return;
+      else {
+        sendMessageonWwoChat(message);
+      }
+    }
+  });
 
 // Send message to WWO chat
 function sendMessageonWwoChat(message) {
