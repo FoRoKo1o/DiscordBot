@@ -1,28 +1,31 @@
 // Import required dependencies
+import dotenv from 'dotenv';
 import Discord, { GatewayIntentBits, ActivityType } from "discord.js";
 import keepAlive from './server.js';
-import fetch from 'node-fetch';
-import fs from 'fs';
-
-// Import functions from wwoApiFunction.js
-import { processMessages, welcome, sendMessageonDiscordChat, getPlayerUsername } from './wwoApiFunction.js';
-
-// Register slash commands
+import { init as initProcessMessages, processMessages, welcome, sendMessageonDiscordChat, getPlayerUsername } from './wwoApiFunction.js';
 import registerCommands from './register-commands.js';
+import { init, fetchMembers, fetchMembersWithXPChange, formatMembersListWithXPChange, getDaysSinceLastCheck, calculateXPChange } from './clan-activity.js';
 
-// Import function from clan-activity.js
-import { fetchMembers, fetchMembersWithXPChange, formatMembersListWithXPChange, getDaysSinceLastCheck, calculateXPChange } from './clan-activity.js';
+
+dotenv.config();
 
 // Discord client initialization
 const client = new Discord.Client({
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent]
 });
 
+// Initialize process messages with the client
+initProcessMessages(client);
+
 // environment variables
 const token = process.env['token'];
-const wwokey = "bot " + process.env['WWOKEY'];
-const clanId = process.env['wwoClanId'];
+const name = process.env['name'];
+const wwoClanId = process.env['wwoClanId'];
 const channelId = process.env['channelId'];
+const wwokey = "bot " + process.env['WWOKEY'];
+const appId = process.env['appId'];
+const clanId = process.env['wwoClanId'];
+const ServerId = process.env['ServerId'];
 
 // Bot setup
 client.once('ready', () => {
@@ -32,8 +35,8 @@ client.once('ready', () => {
         url: "https://www.youtube.com/watch?v=ZguL6LYswu8"
     });
     registerCommands(client);
-    processMessages.init(client);
-    console.log('bot is up');
+	//init(client);
+    console.log('Bot is up');
 });
 
 // Slash command
@@ -60,7 +63,7 @@ client.on('messageCreate', async message => {
 function sendMessageonWwoChat(message) {
     const content = message.content;
     const username = message.member.nickname || message.author.username;
-    let messageFormated = `[DISCORD ${username}] ${content}`;
+    let messageFormatted = `[DISCORD ${username}] ${content}`;
     fetch(`https://api.wolvesville.com/clans/${clanId}/chat`, {
         method: 'POST',
         headers: {
@@ -69,16 +72,26 @@ function sendMessageonWwoChat(message) {
             'Accept': 'application/json'
         },
         body: JSON.stringify({
-            message: messageFormated,
+            message: messageFormatted,
         })
     })
-    .then(() => {
-        console.log(`message ${content} sent!`);
+    .then(response => {
+        // Sprawdź, czy odpowiedź jest w porządku
+        if (!response.ok) {
+            // Zapisz, co się stało
+            console.error(`Error: ${response.status} ${response.statusText}`);
+            return response.text(); // lub response.json() w zależności od sytuacji
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log(`Message ${content} sent!`, data);
     })
     .catch((error) => {
-        console.error('message sending error:', error);
+        console.error('Message sending error:', error);
     });
 }
+
 
 // Login the Discord bot with the provided token
 client.login(token);

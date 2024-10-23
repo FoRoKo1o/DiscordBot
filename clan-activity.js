@@ -1,5 +1,7 @@
 import fetch from 'node-fetch';
 import fs from 'fs';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const clanId = process.env['wwoClanId'];
 const wwokey = "bot " + process.env['WWOKEY'];
@@ -7,6 +9,19 @@ const wwokey = "bot " + process.env['WWOKEY'];
 let client;
 export function init(discordClient) {
     client = discordClient;
+}
+
+// Global variable to store the previous XP values
+let previousXPData = {};
+
+// Load previous XP data from the file
+try {
+  const previousXPDataStr = fs.readFileSync('previous_xp_data.json', 'utf-8');
+  previousXPData = JSON.parse(previousXPDataStr);
+  console.log('xp data loaded');
+  //console.log(previousXPData);
+} catch (error) {
+  console.log('No previous XP data file found. Starting with an empty data object.');
 }
 
 // Fetch members from WWO API

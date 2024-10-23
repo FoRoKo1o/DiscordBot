@@ -1,1 +1,5 @@
 *node_modules
+.env
+last_check_date.txt
+last_message_date.txt
+previous_xp_data.json

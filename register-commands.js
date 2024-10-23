@@ -1,5 +1,6 @@
+import dotenv from 'dotenv';
 import { REST, Routes } from 'discord.js';
-
+dotenv.config();
 const commands = [
     {
         name: 'aktywnosc',

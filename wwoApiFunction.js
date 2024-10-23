@@ -1,9 +1,11 @@
 import fetch from 'node-fetch';
 import fs from 'fs';
 import Discord from "discord.js";
-
+import dotenv from 'dotenv';
+dotenv.config();
 let client;
-function init(discordClient) {
+
+export function init(discordClient) {
     client = discordClient;
 }
 
@@ -52,16 +54,12 @@ export function processMessages(data) {
 	}
 }
 
-//welcomer
+// Welcomer
 export function welcome(message) {
 	const username = message.msg.split('join&username=')[1];
 	const channel = client.channels.cache.get(channelId);
 	channel.send(`Witamy **${username}**!`);
-	/*var welcome = `Witamy ${username} w klanie Quack* Poland! Razem stworzymy niezapomniane chwile. 
-W razie pytań pisz do:
-Foroko, Grafin, Agama, Beathrice Preferowany kontakt: Discord https://discord.gg/XDygxsS.
-Udanych łowów!`;*/
-  var welcome = `Witamy ${username}! Zapraszamy na serwer discord https://discord.gg/XDygxsS.`;
+	var welcome = `Witamy ${username}! Zapraszamy na serwer discord https://discord.gg/XDygxsS.`;
 	fetch(`https://api.wolvesville.com/clans/${clanId}/chat`, {
 			method: 'POST',
 			headers: {
@@ -74,7 +72,7 @@ Udanych łowów!`;*/
 			})
 		})
 		.then(() => {
-			console.log(`message ${welcome} send!`);
+			console.log(`message ${welcome} sent!`);
 		})
 		.catch((error) => {
 			console.error('message sending error:', error);
@@ -84,11 +82,9 @@ Udanych łowów!`;*/
 // Send message to Discord chat
 export function sendMessageonDiscordChat(message) {
 	const channel = client.channels.cache.get(channelId);
-	//if (message.playerId != null && !message.isSystem) {
 	getPlayerUsername(message.playerId).then((username) => {
 		channel.send(`[Wilki ${username}] ${message.msg}`);
 	});
-	//}
 }
 
 // Fetch player's username from WWO API
@@ -104,9 +100,3 @@ export function getPlayerUsername(playerId) {
 		.then((response) => response.json())
 		.then((data) => data.username);
 }
-//   module.exports = {
-//     init,
-//     welcome,
-//     sendMessageonDiscordChat,
-//     getPlayerUsername,
-//   };
