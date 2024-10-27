@@ -13,6 +13,7 @@ export function init(discordClient) {
 const wwokey = "bot " + process.env['WWOKEY'];
 const clanId = process.env['wwoClanId'];
 const channelId = process.env['channelId'];
+const errorChannelId = process.env['errorChannelId'];
 let lastMsgId = null;
 
 const LAST_MESSAGE_FILE = 'last_message_date.txt';
@@ -26,18 +27,30 @@ if (fs.existsSync(LAST_MESSAGE_FILE)) {
 
 // Fetch messages from WWO API at regular intervals
 setInterval(() => {
-	fetch(`https://api.wolvesville.com/clans/${clanId}/chat`, {
-			method: 'GET',
-			headers: {
-				'Authorization': wwokey,
-				'Content-Type': 'application/json',
-				'Accept': 'application/json'
-			}
-		})
-		.then((response) => response.json())
-		.then((data) => processMessages(data));
+    fetch(`https://api.wolvesville.com/clans/${clanId}/chat`, {
+        method: 'GET',
+        headers: {
+            'Authorization': wwokey,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
+    })
+    .then((response) => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then((data) => processMessages(data))
+    .catch((error) => {
+		sendErrorToDiscord(error.message);
+    });
 }, 10000); // get messages once per 10s
 
+export function sendErrorToDiscord(error) {
+	const channel = client.channels.cache.get(errorChannelId);
+	channel.send(`<@343083547499954186>!!! <@1078716201993252865> Ma problem!: ${error}`);
+}
 // Process received messages
 export function processMessages(data) {
 	const newMessages = data.filter(message => new Date(message.date) > lastMessageDate);

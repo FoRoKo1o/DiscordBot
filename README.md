@@ -13,6 +13,7 @@ token=YOUR_DISCORD_BOT_TOKEN
 WWOKEY=YOUR_WOLVESVILLE_API_KEY
 wwoClanId=YOUR_WOLVESVILLE_CLAN_ID
 channelId=YOUR_DISCORD_CHANNEL_ID
+errorChannelId=DiscordChannelID
 ```
 
 Replace the values with your own:
@@ -21,6 +22,7 @@ Replace the values with your own:
 * Wolvesville API key - available in game menu
 * clan ID - clan ID - can be obtained by using GET /clans/search?name={name}
 * Discord channel ID - that the bot will listen to
+* ErrorChannelId - channel ID for bot error logging
 
 # Running bot
 Under Linux
