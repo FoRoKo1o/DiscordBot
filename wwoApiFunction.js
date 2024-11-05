@@ -93,11 +93,50 @@ export function welcome(message) {
 }
 
 // Send message to Discord chat
-export function sendMessageonDiscordChat(message) {
+export async function sendMessageonDiscordChat(message) {
 	const channel = client.channels.cache.get(channelId);
-	getPlayerUsername(message.playerId).then((username) => {
-		channel.send(`[Wilki ${username}] ${message.msg}`);
-	});
+
+	if (message.emojiId != null) {
+		let emojiUrl = await getEmojiUrl(message.emojiId); // Dodany await
+		getPlayerUsername(message.playerId).then((username) => {
+			channel.send(`[Wilki ${username}] ${emojiUrl}`);
+		});
+	} else {
+		getPlayerUsername(message.playerId).then((username) => {
+			channel.send(`[Wilki ${username}] ${message.msg}`);
+		});
+	}
+}
+
+//get emoji url
+export async function getEmojiUrl(emojiId){
+	try{
+		const response = await fetch(`https://api.wolvesville.com/items/emojis`, {
+			method: 'GET',
+			headers: {
+				'Authorization': wwokey,
+				'Content-Type': 'application/json',
+				'Accept': 'application/json'
+			},
+		})
+		if (!response.ok) {
+            throw new Error("Failed to fetch emojis");
+        }
+
+        const emojis = await response.json();
+		//console.log("emojis" + emojis);
+        const emoji = emojis.find(e => e.id === emojiId);
+
+        if (!emoji) {
+            throw new Error(`Emoji with id ${emojiId} not found`);
+        }
+
+        return emoji.urlPreview;
+	}
+	catch(e){
+		console.log(e);
+		return null;
+	}
 }
 
 // Fetch player's username from WWO API
